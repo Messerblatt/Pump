@@ -43,7 +43,7 @@ def mkdir_if_necessary(path):
         return
     os.mkdir(path)
     
-class BatchFBX(bpy.types.Operator):
+class FastFBX(bpy.types.Operator):
     bl_idname = "mesh.batch_fbx_export"
     bl_label = "Batch Export FBX"
     
@@ -119,7 +119,7 @@ class TriggerPie(bpy.types.Operator):
         return {"FINISHED"}
 
 def register():
-    bpy.utils.register_class(BatchFBX)
+    bpy.utils.register_class(FastFBX)
     bpy.utils.register_class(ExportMenu)
     bpy.utils.register_class(TriggerPie)
 #    bpy.ops.wm.call_menu_pie(name="ExportMenu")
@@ -138,7 +138,7 @@ def unregister():
         km.keymap_items.remove(kmi)
     addon_keymaps.clear()
     
-    bpy.utils.unregister_class(BatchFBX)
+    bpy.utils.unregister_class(FastFBX)
     del bpy.types.Scene.fbxPath
 
 if __name__ == "__main__" :
