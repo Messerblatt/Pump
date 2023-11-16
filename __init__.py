@@ -1,6 +1,3 @@
-import bpy
-import os
-
 # ##### BEGIN GPL LICENSE BLOCK #####
 #
 #  This program is free software; you can redistribute it and/or
@@ -19,6 +16,8 @@ import os
 #
 # ##### END GPL LICENSE BLOCK #####
 
+import bpy
+import os
 
 bl_info = \
     {
@@ -34,14 +33,21 @@ bl_info = \
         "category" : "Import-Export",
     }
 
-current_file_location = os.path.dirname(bpy.data.filepath)
+
 fbx_folder = "fbx_assets"
+current_file_location = os.path.dirname(bpy.data.filepath)
 export_path = os.path.join(current_file_location, fbx_folder)
+
+if not os.path.exists(os.path.join(current_file_location, fbx_folder)):
+    os.mkdir(os.path.join(current_file_location, fbx_folder))
 
 def mkdir_if_necessary(path):
     if os.path.exists(path):
         return
-    os.mkdir(path)
+    try:
+        os.mkdir(path)
+    except:
+        raise Exception("Can't find path. Have you tried saving your .blend file?")
     
 class FastFBX(bpy.types.Operator):
     bl_idname = "mesh.batch_fbx_export"
