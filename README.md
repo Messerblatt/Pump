@@ -5,7 +5,7 @@ If you arrange your objects in scenes, FastFBX will create subfolders according 
     
 As of now you can only change the target folder by changing the dirs in the source code.
 
-**WARNING**: FastFBXuses a dirty workaround to solve common fbx-scaling issues. Before exporting objects, make sure that you have applied the scale of the objects by using
+**WARNING**: FastFBX uses a dirty workaround to solve common fbx-scaling issues. Before exporting objects, make sure that you have applied the scale of the objects by using
     `CTRL-A -> Apply scale`
     
 Otherwise your objects will scale-up by x100
