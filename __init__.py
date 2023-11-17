@@ -33,27 +33,23 @@ bl_info = \
         "category" : "Import-Export",
     }
 
-
-fbx_folder = "fbx_assets"
-current_file_location = os.path.dirname(bpy.data.filepath)
-export_path = os.path.join(current_file_location, fbx_folder)
-
-if not os.path.exists(os.path.join(current_file_location, fbx_folder)):
-    os.mkdir(os.path.join(current_file_location, fbx_folder))
+# if not os.path.exists(os.path.join(current_file_location, fbx_folder)):
+#    os.mkdir(os.path.join(current_file_location, fbx_folder))
 
 def mkdir_if_necessary(path):
     if os.path.exists(path):
         return
-    try:
-        os.mkdir(path)
-    except:
-        raise Exception("Can't find path. Have you tried saving your .blend file?")
+    os.mkdir(path)
     
 class FastFBX(bpy.types.Operator):
     bl_idname = "mesh.batch_fbx_export"
     bl_label = "Batch Export FBX"
     
     def invoke(self, context, event):
+        fbx_folder = "fbx_assets"
+        current_file_location = os.path.dirname(bpy.data.filepath)
+        export_path = os.path.join(current_file_location, fbx_folder)
+    
         view_layer = bpy.context.view_layer
         obj_active = view_layer.objects.active
         selection = bpy.context.selected_objects
@@ -148,10 +144,14 @@ def unregister():
     del bpy.types.Scene.fbxPath
 
 if __name__ == "__main__" :
+    fbx_folder = "fbx_assets"
+    current_file_location = os.path.dirname(bpy.data.filepath)
+    export_path = os.path.join(current_file_location, fbx_folder)
+    mkdir_if_necessary(export_path)
     try:
         unregister()
     except:
         pass
     register()
 
-    mkdir_if_necessary(export_path)
+    
