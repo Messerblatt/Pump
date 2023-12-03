@@ -12,7 +12,7 @@ bl_info = {
     'version': (0, 0, 2),
     'blender': (3, 5, 0),
     'location': 'Pie Menu (SHIFT+F in Object mode, with objects selected)',
-    'description': 'Batch exports all selected Objects as separate files.'
+    'description': 'Batch exports selected Objects as separate files.'
 }
 
 # For storing hotkeys
@@ -41,8 +41,8 @@ def get_objects():
 def get_user_path():
     return {"export_path_1" : bpy.context.preferences.addons['BatchExporter'].preferences.batch_export_path}
     
-def export_routine(obj, scene, settings):
-    # Workaround for fbx.-scaling issues
+def export_routine(obj, export_path, settings): # settings not implemented yet
+    # Workaround for fbx.-scaling issues:
     obj.select_set(True)
     bpy.ops.object.transform_apply(scale=True, location=False, properties=False)
     obj.scale = [100, 100, 100]
@@ -51,7 +51,7 @@ def export_routine(obj, scene, settings):
 
     # some exporters only use the active object
     # view_layer.objects.active = obj
-    fn = os.path.join(get_user_path()['export_path_1'], scene, obj.name_full)
+    fn = os.path.join(export_path, obj.name_full)
     bpy.ops.export_scene.fbx(
         filepath=fn + ".fbx", 
         use_selection=True,
@@ -88,14 +88,13 @@ class BatchExporter(Operator):
         for obj in layers["selection"]:
             
             # TODO: Enable disable scene-sensitivity in user-settings
-            full_path = os.path.join(batch_export_path_, layers["scene"])
-            mkdir_if_necessary(full_path)
-            export_routine(obj, layers["scene"], export_settings)
+            scene_sensitivity = context.preferences.addons['BatchExporter'].preferences.scene_sensitive
+            if scene_sensitivity:
+                batch_export_path_ = os.path.join(batch_export_path_, layers["scene"])
+            mkdir_if_necessary(batch_export_path_)
+            export_routine(obj, batch_export_path_, export_settings)
 
         layers["view_layer"].objects.active = layers["obj_active"]
-
-        # for obj in selection:
-        #    obj.select_set(False)
         return {"FINISHED"}
         
 class ExportMenu(Menu):
@@ -105,6 +104,7 @@ class ExportMenu(Menu):
         layout = self.layout
         pie = layout.menu_pie()
         pie.operator("mesh.batch_exporter", text="Batch Export FBX", icon="RIGHTARROW")
+
 
 # Triggers ExportMenu, because ExportMenu 
 # apperantly can't trigger itself
@@ -122,15 +122,23 @@ class UserSettings(AddonPreferences):
     batch_export_path: bpy.props.StringProperty(
         name = "batch_export_path",
         description = "Where user set the exports files",
-        default = "..."
+        default = "Path not set"
     )
+    
+    scene_sensitive: bpy.props.BoolProperty(
+        name = "Consider Scenes",
+        description = "If True, BatchExporter will export your objects into a subfolder inside your destination folder that is named after the scene in which the object is in. If set to False, BatchExporter just exports into your destination folder.",
+        default = True
+    )
+    
     def draw(self, context):
         layout = self.layout
         layout.label(text='Destination folder')
         row = layout.row()
         row.label(text=get_user_path()["export_path_1"])
-#        row.prop(context.scene, "batch_export_path")
         row.operator("test.folder_pref", icon="FILEBROWSER", text="Choose path")
+        row2 = layout.row()
+        row2.prop(self, 'scene_sensitive', expand=True)
 
 
 class DestinationFolderModal(Operator, ExportHelper):
@@ -158,28 +166,14 @@ def register():
     bpy.utils.register_class(ExportMenu)
 
     bpy.utils.register_class(DestinationFolderModal)
-
-#    bpy.types.Scene.batch_export_path = bpy.props.StringProperty \
-#    (
-#        name = "Export Path",
-#        description = "Where to save the exports files",
-#        default = "..."
-#    )
-    
-#    bpy.ops.wm.call_menu_pie(name="ExportMenu")
-
     wm = bpy.context.window_manager
     kc = wm.keyconfigs.addon
 
     if kc:
-        km = wm.keyconfigs.addon.keymaps.new(name='Object Mode')
-        
+        km = wm.keyconfigs.addon.keymaps.new(name='Object Mode')        
         kmi = km.keymap_items.new(TriggerPie.bl_idname, 'F', 'PRESS', shift=True)
         addon_keymaps.append((km,kmi))
         
-#        km_pref = km.keymap_items.new(DestinationFolderModal.bl_idname, 'R', 'PRESS', shift=True)
-#        addon_keymaps.append((km,km_pref))
-
 def unregister():
     for km, kmi in addon_keymaps:
         km.keymap_items.remove(kmi)
