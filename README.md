@@ -3,7 +3,7 @@
 
 ![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/BatchExporter/blob/main/BatchExporter_screenshot.png)
 
-Blender addon to accelerate the export-import pipeline to Game engines. 
+Blender addon for faster batch exports.
 
 # Usage
 In Blender, select objects and press Shift+F
