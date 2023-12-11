@@ -6,7 +6,7 @@ from bpy.props import StringProperty
 from bpy.utils import register_class
 
 bl_info = {
-    'name': 'BatchExporter',
+    'name': 'Pump',
     'category': 'All',
     'author': 'Markus Meyer',
     'version': (0, 0, 3),
