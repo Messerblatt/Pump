@@ -1,12 +1,13 @@
 # Pump
 
+![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/BatchExporter/blob/main/BatchExporter_screenshot2.png)
 
-![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/BatchExporter/blob/main/BatchExporter_screenshot.png)
-
-Blender addon for faster batch exports.
+Blender addon to export all selected objects separately.
 
 # Usage
-In Blender, select objects and press Shift+F
+![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/BatchExporter/blob/main/BatchExporter_screenshot.png)
+
+In Blender, select objects and press Shift+F. At least 1 target directory must be set in the addon settings to give Pump a direction. 
 
 # Options
 If you set Scene Sensitivity to True, Pump will export your objects into a subfolder inside your destination folder that is named after the scene in which the object is in. If set to False, Pump will just export into your destination folder.
