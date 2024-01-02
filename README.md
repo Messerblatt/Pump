@@ -1,8 +1,7 @@
 # Pump
 
-![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/BatchExporter/blob/main/BatchExporter_screenshot2.png)
 
-Blender addon to export all selected objects separately.
+Blender add-on to batch-export many objects one by one.
 
 # Usage
 ![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/BatchExporter/blob/main/BatchExporter_screenshot.png)
