@@ -1,7 +1,10 @@
 # Pump
 
+![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/Pump/blob/main/Screenhot_lightingOnly.png)
 
 Blender add-on to batch-export many objects one by one.
+
+
 
 # Usage
 ![Screenshot of BatchExporter's Pie Menu](https://github.com/Messerblatt/BatchExporter/blob/main/BatchExporter_screenshot.png)
